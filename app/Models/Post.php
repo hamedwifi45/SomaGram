@@ -9,4 +9,9 @@ class Post extends Model
 {
     /** @use HasFactory<\Database\Factories\PostFactory> */
     use HasFactory;
+
+    public function imagepost()
+    {
+        return $this->hasMany(imagepost::class);
+    }
 }

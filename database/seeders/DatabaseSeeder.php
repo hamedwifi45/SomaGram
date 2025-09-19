@@ -2,9 +2,12 @@
 
 namespace Database\Seeders;
 
+use App\Models\imagepost;
+use App\Models\Post;
 use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Str;
 
 class DatabaseSeeder extends Seeder
 {
@@ -13,11 +16,19 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(10)->create();
-
-        User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
-        ]);
+        User::factory()
+            ->count(10)
+            ->has(
+                Post::factory()
+                    ->count(3)
+                    // سيتم تنفيذ هذا الكود بعد إنشاء كل منشور
+                    ->afterCreating(function (Post $post) {
+                        // هنا يتم إنشاء عدد عشوائي من الصور لكل منشور
+                        imagepost::factory()->count(random_int(1, 6))->create([
+                            'post_id' => $post->id,
+                        ]);
+                    })
+            )
+            ->create();
     }
 }
