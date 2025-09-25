@@ -66,7 +66,8 @@ class PostController extends Controller
      */
     public function edit(Post $post)
     {
-        //
+        $images = $post->imagepost;
+        return view('posts.edit', compact('post', 'images'));
     }
 
     /**
@@ -74,7 +75,24 @@ class PostController extends Controller
      */
     public function update(Request $request, Post $post)
     {
-        //
+        $data = $request->validate([
+            'image' => 'nullable',
+            'image.*' => 'image|mimes:jpeg,png,jpg,gif,svg' ,
+            'caption' => 'required|string|max:255',
+        ]);
+        if(request()->hasFile('image')){
+            foreach ($request->file('image') as $image) {
+                $name = rand(100000, 999999) . '.' . $image->getClientOriginalExtension();
+                $image->move(public_path('storage/posts'), $name); 
+                $simag = new imagepost();
+                $simag->image_path = $name;
+                $simag->post_id = $post->id;
+                $simag->save();
+            }
+        }
+        $post->caption = $data['caption'];
+        $post->save();
+    return redirect()->back()->with('success', 'Post updated successfully.');
     }
 
     /**

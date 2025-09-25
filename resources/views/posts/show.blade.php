@@ -34,6 +34,10 @@
                 <a href="#" class="font-bold text-gray-800 hover:text-pink-500">
                     {{ $post->owner->username }}
                 </a>
+                @if ($post->owner->id === auth()->id())
+                
+                <a href="{{ route('post.edit', $post->slug) }}"><i class="bi bi-pencil-square text-black"></i></a>
+                @endif
             </div>
 
             {{-- Middle (caption + comments) --}}

@@ -18,9 +18,7 @@
 
             <form action="{{ route('post.store') }}" enctype="multipart/form-data" class="w-full" method="post">
                 @csrf
-                <input class="w-full border border-gray-200 bg-gray-50 block focus:outline-none rounded-xl" name="image[]" value="{{ old('image') }}" multiple id="file_input" type="file">
-                <p class="text-sm mt-3 text-gray-500 dark:text-gray-300" id="file_input_help">PNG JPG or GIF</p>
-                <textarea name="caption" rows="5" class="mt-10 border border-gray-200 w-full rounded-xl" placeholder="{{ __("WRITE a CAPTION") }}"></textarea>
+                <x-create-edit/>
                 <x-primary-button class="mt-4">{{ __('Create Post') }}</x-primary-button>
             </form>
         </div>
