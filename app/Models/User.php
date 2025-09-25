@@ -51,4 +51,18 @@ class User extends Authenticatable
     {
         return $this->hasMany(Post::class);
     }
+
+    public function comments()
+    {
+        return $this->hasMany(Comment::class);
+    }          
+    public function likes(){
+        $this->belongsToMany(Post::class,'likes');
+    }          
+    public function following(){
+        return $this->belongsToMany(User::class,'follows', relatedPivotKey:'user_id',foreignPivotKey: 'following_user_id')->withPivot('is_accepted')->withTimestamps();
+    }
+    public function follower(){
+        return $this->belongsToMany(User::class,'follows',relatedPivotKey: 'following_user_id',foreignPivotKey:'user_id')->withPivot('is_accepted')->withTimestamps();
+    }                   
 }

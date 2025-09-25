@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\imagepost;
 use App\Models\Post;
 use Illuminate\Http\Request;
 
@@ -20,7 +21,7 @@ class PostController extends Controller
      */
     public function create()
     {
-        //
+        return view('posts.create');
     }
 
     /**
@@ -28,7 +29,26 @@ class PostController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $data = $request->validate([
+            'image' => 'required',
+            'image.*' => 'image|mimes:jpeg,png,jpg,gif,svg',
+            'caption' => 'required|string|max:255',
+        ]);
+        $post = new Post();
+        $data['slug'] = \Str::random(10); 
+        $data['user_id'] = auth()->id();
+        $data['caption'] = $request->caption;
+        $post->fill($data);
+        $post->save();
+        foreach ($request->file('image') as $image) {
+            $name = rand(100000, 999999) . '.' . $image->getClientOriginalExtension();
+            $image->move(public_path('storage/posts'), $name); 
+            $simag = new imagepost();
+            $simag->image_path = $name;
+            $simag->post_id = $post->id;
+            $simag->save();
+        }
+        return redirect()->back();
     }
 
     /**
@@ -36,7 +56,9 @@ class PostController extends Controller
      */
     public function show(Post $post)
     {
-        //
+        $images = $post->imagepost;
+        
+        return view('posts.show', compact('post', 'images'));
     }
 
     /**
