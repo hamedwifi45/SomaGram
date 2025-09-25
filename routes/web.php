@@ -23,7 +23,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/post/{post:slug}','show')->name('post.show');
         Route::put('/post/{post:slug}/update','update')->name('post.update');
         Route::get('/post/{post:slug}/edit','edit')->name('post.edit');
-        Route::delete('/posts/{post}','destroy')->name('posts.destroy');
+        Route::delete('/posts/{post:slug}','destroy')->name('posts.destroy');
     });
     Route::post('/post/{post:slug}/comment',[CommentController::class,'store'])->name('comment.store');
 });

@@ -37,6 +37,17 @@
                 @if ($post->owner->id === auth()->id())
                 
                 <a href="{{ route('post.edit', $post->slug) }}"><i class="bi bi-pencil-square text-black"></i></a>
+                
+                <form class="inline" id="delete_from_{{ $post->id }}" action="{{ route('posts.destroy',$post->slug) }}" method="post">
+                @csrf
+                @method('delete')
+
+                <button class="text-red-600" type="button" onclick="comfirmDelete({{ $post->id }})">
+                    <i class="bi bi-trash-fill inline ml-2"></i>
+                </button>
+
+                </form>
+                
                 @endif
             </div>
 
@@ -105,6 +116,22 @@
 
     {{-- Script for image navigation --}}
     <script>
+        function comfirmDelete(Postid){
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "هذا الخيار لايمكن تراجع عنه",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: 'اي بدي احذفها',
+                cancelButtonText: 'لالا ما بدي احذفها',
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    document.getElementById('delete_from_'+Postid).submit();
+                }
+            })
+        }
         let currentImage = 0;
         const images = document.querySelectorAll('[data-image]');
 

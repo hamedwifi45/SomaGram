@@ -100,6 +100,16 @@ class PostController extends Controller
      */
     public function destroy(Post $post)
     {
-        //
+        if ($post->imagepost) {
+            foreach ($post->imagepost as $image) {
+                $imagePath = public_path('storage/posts/' . $image->image_path);
+                if (file_exists($imagePath)) {
+                    unlink($imagePath); 
+                }
+                $image->delete(); 
+            }
+        }
+        $post->delete();
+        return redirect()->route('welcome')->with('success', 'Post deleted successfully.'); 
     }
 }
