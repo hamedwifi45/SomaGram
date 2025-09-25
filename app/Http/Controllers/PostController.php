@@ -13,7 +13,8 @@ class PostController extends Controller
      */
     public function index()
     {
-        //
+        $posts = Post::where('id' , '>' , 25)->get();
+        return view('posts.index', compact('posts'));
     }
 
     /**
