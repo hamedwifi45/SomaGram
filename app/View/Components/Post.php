@@ -11,10 +11,12 @@ class Post extends Component
     /**
      * Create a new component instance.
      */ 
-    
-    public function __construct(public  $post)
+    public $post;
+    public $images;
+    public function __construct($post , $images)
     {
         $this->post = $post;
+        $this->images = $images;
     }
 
     /**
