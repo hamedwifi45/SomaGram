@@ -9,9 +9,7 @@
         .card-header{
             @apply flex flex-row items-center p-5 ;
         }
-        .card-body{
-            @apply p-5;
-        }
+        
         .card-footer{
             @apply p-3 mt-5 border-t border-t-gray-200;
         }

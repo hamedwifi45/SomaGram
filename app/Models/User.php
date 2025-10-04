@@ -64,5 +64,13 @@ class User extends Authenticatable
     }
     public function follower(){
         return $this->belongsToMany(User::class,'follows',relatedPivotKey: 'following_user_id',foreignPivotKey:'user_id')->withPivot('is_accepted')->withTimestamps();
-    }                   
+    }
+    public function suggested_users(){
+        $following_ids = $this->following()->pluck('user_id')->toArray();
+        $following_ids[] = $this->id; // Exclude self
+        return User::whereNotIn('id', $following_ids)
+        ->get()              
+        ->shuffle()
+        ->take(5);
+    }
 }

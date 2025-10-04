@@ -13,10 +13,11 @@ class PostController extends Controller
      */
     public function index()
     {
-        $posts = Post::with('imagepost')->get();
+        $posts = Post::with('imagepost')->get()->shuffle();
+        $sug_user = auth()->user()->suggested_users();
+         
         
-        
-        return view('posts.index', compact('posts'));
+        return view('posts.index', compact('posts', 'sug_user'));
     }
 
     /**
@@ -114,5 +115,10 @@ class PostController extends Controller
         }
         $post->delete();
         return redirect()->route('welcome')->with('success', 'Post deleted successfully.'); 
+    }
+    public function explore(){
+
+        $posts = Post::with('imagepost')->whereRelation('owner' , 'is_private' , '=' , 0)->whereNot('user_id' , auth()->id())->get()->shuffle();
+        return view('posts.explore', compact('posts'));
     }
 }
