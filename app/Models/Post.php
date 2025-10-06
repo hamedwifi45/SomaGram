@@ -25,7 +25,7 @@ class Post extends Model
     }
     public function comments()
     {
-        return $this->hasMany(Comment::class);
+        return $this->hasMany(comment::class);
     }
     public function likes(){
         $this->belongsToMany(Post::class,'likes');

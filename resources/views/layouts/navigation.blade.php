@@ -19,7 +19,7 @@
             </div>
 
             <!-- Settings Dropdown -->
-            <div class="hidden sm:flex sm:items-center sm:ms-6">
+            <div class="hidden md:flex md:flex-row space-x-3 items-center justify-center sm:ms-6">
                 @auth
                 <a href="{{ route('home') }}" class="text-[1.5rem] rtl:ml-6">
                 {!! 

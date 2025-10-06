@@ -14,7 +14,7 @@ class PostController extends Controller
     public function index()
     {
         $posts = Post::with('imagepost')->get()->shuffle();
-        $sug_user = auth()->user()->suggested_users();
+        $sug_user = auth()->user()->suggested_users()->take(5)->get();
          
         
         return view('posts.index', compact('posts', 'sug_user'));
@@ -118,7 +118,7 @@ class PostController extends Controller
     }
     public function explore(){
 
-        $posts = Post::with('imagepost')->whereRelation('owner' , 'is_private' , '=' , 0)->whereNot('user_id' , auth()->id())->get()->shuffle();
+        $posts = Post::with('imagepost')->whereRelation('owner' , 'is_private' , '=' , 0)->whereNot('user_id' , auth()->id())->simplePaginate(12);
         return view('posts.explore', compact('posts'));
     }
 }
